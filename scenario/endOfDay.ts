@@ -120,6 +120,7 @@ export const challengerCertifyTasks = () => {
  * 6.1. THINK - Simulate thinking time before entering group
  * 6.2. Get group member list
  * 6.3. Get group chat-room information
+ * 6.4. THINK - Simulate thinking time before leaving group
  */
 export const hunterHuntTasks = () => {
     const userIdx = exec.scenario.iterationInTest + (data.length / 2);
@@ -159,5 +160,8 @@ export const hunterHuntTasks = () => {
 
         // 6.3. Get group chat-room information
         getGroupChatMessageList(id, 0, 20, accessToken);
+
+        // 6.4. THINK - Simulate thinking time before leaving group
+        sleep(8);
     }
 }
