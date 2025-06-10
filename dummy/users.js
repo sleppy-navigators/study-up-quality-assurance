@@ -22,7 +22,7 @@ function generateUser(index) {
     const now = new Date().toISOString();
     return {
         id: index + 1,
-        username: faker.person.displayName(),
+        username: faker.person.fullName(),
         email: faker.internet.email(),
         amount: CONFIG.DEFAULT_POINTS,
         deleted: false,

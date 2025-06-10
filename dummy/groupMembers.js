@@ -18,10 +18,10 @@ const CONFIG = {
     OUTPUT_FILE: 'group_members.csv'
 };
 
-// Group membership generation function
-function generateGroupMemberships() {
+// Group member generation function
+function generateGroupMembers() {
     const now = new Date().toISOString();
-    const memberships = [];
+    const members = [];
 
     // For each group, assign members
     for (let groupId = 1; groupId <= CONFIG.TOTAL_GROUPS; groupId++) {
@@ -32,8 +32,8 @@ function generateGroupMemberships() {
         for (let i = 0; i < CONFIG.MEMBERS_PER_GROUP; i++) {
             const userId = baseUserId + i;
             if (userId <= CONFIG.TOTAL_USERS) {
-                memberships.push({
-                    id: memberships.length + 1,
+                members.push({
+                    id: members.length + 1,
                     user_id: userId,
                     group_id: groupId,
                     deleted: false,
@@ -44,12 +44,12 @@ function generateGroupMemberships() {
         }
     }
 
-    return memberships;
+    return members;
 }
 
 // Main execution function
-async function generateGroupMembershipDummyData() {
-    console.log('Starting group membership dummy data generation...');
+async function generateGroupMemberDummyData() {
+    console.log('Starting group member dummy data generation...');
     console.log(`Total users: ${CONFIG.TOTAL_USERS}`);
     console.log(`Total groups: ${CONFIG.TOTAL_GROUPS}`);
     console.log(`Groups per user: ${CONFIG.GROUPS_PER_USER}`);
@@ -63,40 +63,40 @@ async function generateGroupMembershipDummyData() {
     removeFileIfExists(outputPath);
 
     const writeStream = fs.createWriteStream(outputPath);
-    let totalMemberships = 0;
+    let totalMembers = 0;
 
     try {
         // Write CSV header
         writeStream.write('id,user_id,group_id,deleted,created_at,updated_at\n');
 
-        // Generate all memberships
-        const memberships = generateGroupMemberships();
+        // Generate all members
+        const members = generateGroupMembers();
 
-        // Write memberships to CSV
-        for (const membership of memberships) {
+        // Write members to CSV
+        for (const member of members) {
             const csvLine = [
-                membership.id,
-                membership.user_id,
-                membership.group_id,
-                membership.deleted ? 1 : 0,
-                `"${membership.created_at}"`,
-                `"${membership.updated_at}"`
+                member.id,
+                member.user_id,
+                member.group_id,
+                member.deleted ? 1 : 0,
+                `"${member.created_at}"`,
+                `"${member.updated_at}"`
             ].join(',') + '\n';
 
             writeStream.write(csvLine);
-            totalMemberships++;
+            totalMembers++;
 
             // Progress logging
-            if (totalMemberships % CONFIG.LOG_INTERVAL === 0) {
-                const progress = calculateProgress(totalMemberships, memberships.length);
-                console.log(`Progress: ${progress}% (${totalMemberships}/${memberships.length} memberships generated)`);
+            if (totalMembers % CONFIG.LOG_INTERVAL === 0) {
+                const progress = calculateProgress(totalMembers, members.length);
+                console.log(`Progress: ${progress}% (${totalMembers}/${members.length} members generated)`);
             }
         }
 
         // Close stream
         await closeStream(writeStream);
-        console.log('\nGroup membership dummy data generation completed!');
-        console.log(`Total memberships generated: ${totalMemberships}`);
+        console.log('\nGroup member dummy data generation completed!');
+        console.log(`Total members generated: ${totalMembers}`);
         console.log(`Output file location: ${outputPath}`);
 
     } catch (error) {
@@ -106,7 +106,7 @@ async function generateGroupMembershipDummyData() {
 }
 
 // Execute script
-generateGroupMembershipDummyData().catch(error => {
+generateGroupMemberDummyData().catch(error => {
     console.error('Fatal error occurred:', error);
     process.exit(1);
 }); 
