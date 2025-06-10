@@ -3,6 +3,9 @@
   "type": "module",
   "author": "sleppy-navigators",
   "homepage": "http://monitor.study-up.site:3000/admin",
+  "scripts": {
+    "end-of-day": "k6 run -e BASE_URL=http://localhost:8080 ./scenario/endOfDay.ts"
+  },
   "devDependencies": {
     "@types/k6": "^1.0.2"
   }

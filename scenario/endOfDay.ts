@@ -1,10 +1,22 @@
 import exec from "k6/execution";
 import {sleep} from 'k6';
 import {SharedArray} from 'k6/data';
-import {refreshToken} from "../api/auth";
-import {getBountyBoard, getUserGroups, getUserProfile, getUserTasks, GroupSortType, UserTaskStatus} from "../api/user";
-import {certifyTask, huntTask} from "../api/challenge";
-import {getGroupChatMessageList, getGroupMemberList, GroupMemberSortType} from "../api/groups";
+
+// @ts-ignore
+import {refreshToken} from "../api/auth.ts";
+import {
+    getBountyBoard,
+    getUserGroups,
+    getUserProfile,
+    getUserTasks,
+    GroupSortType,
+    UserTaskStatus
+// @ts-ignore
+} from "../api/user.ts";
+// @ts-ignore
+import {certifyTask, huntTask} from "../api/challenge.ts";
+// @ts-ignore
+import {getGroupChatMessageList, getGroupMemberList, GroupMemberSortType} from "../api/groups.ts";
 
 /**
  * Expect the most traffic at the end of the day and the beginning of the day
@@ -12,7 +24,7 @@ import {getGroupChatMessageList, getGroupMemberList, GroupMemberSortType} from "
  */
 export const options = {
     discardResponseBodies: true,
-    scenario: {
+    scenarios: {
         /**
          * Expect many users to submit task certification before the end of the day
          * (70% of DAUs will submit certification before the end of the day)
