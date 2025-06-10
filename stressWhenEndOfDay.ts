@@ -4,34 +4,20 @@ import {sleep} from "k6";
 import exec from "k6/execution";
 
 /**
- * <h3>Predict the traffic pattern</h3>
- *
  * Expect the most traffic at the end of the day and the beginning of the day
  * (90% of DAUs will be concentrated at the end of the day)
- *
- * <h4>Task certification</h4>
- *
- * Expect many users to submit task certification before the end of the day
- * (70% of DAUs will submit certification before the end of the day)
- * <p>
- * Assume 30 minutes before the end of the day
- * <p>
- * => Set the Arrival Rate to 1,050 users/30 minutes
- *
- * <h4>Task hunting</h4>
- *
- * Expect a large number of users to be task hunting right after the start of the day
- * (90% of DAUs are expected to be task hunting right after the start of the day)
- * <p>
- * Assume 30 minutes right after the start of the day, and also expect a traffic pattern that spikes right after the start and then steadily declines
- * <ol>
- *   <li>Arrival Rate : 1,050 users/10 minutes</li>
- *   <li>Arrival Rate : 300 users/20 minutes</li>
- * </ol>
  */
 export const options = {
     discardResponseBodies: true,
     scenario: {
+        /**
+         * Expect many users to submit task certification before the end of the day
+         * (70% of DAUs will submit certification before the end of the day)
+         * <p>
+         * Assume 30 minutes before the end of the day
+         * <p>
+         * => Set the Arrival Rate to 1,050 users/30 minutes
+         */
         challengerCertifyTasks: {
             exec: "challengerCertifyTasks",
             startTime: "0s",
@@ -41,7 +27,24 @@ export const options = {
             rate: 35,
             preAllocatedVUs: 40,
         },
+
         // TODO: simulate end-of-day scheduler in parallel (challenge & task expiration checker)
+        /**
+         * At the end of the day,
+         * a scheduler is triggered to check the completion/failure of challenges and tasks.
+         * This behavior is directly related to the load on the server and needs to be simulated.
+         */
+
+        /**
+         * Expect a large number of users to be task hunting right after the start of the day
+         * (90% of DAUs are expected to be task hunting right after the start of the day)
+         * <p>
+         * Assume 30 minutes right after the start of the day, and also expect a traffic pattern that spikes right after the start and then steadily declines
+         * <ol>
+         *   <li>Arrival Rate : 1,050 users/10 minutes</li>
+         *   <li>Arrival Rate : 300 users/20 minutes</li>
+         * </ol>
+         */
         hunterHuntTasks: {
             exec: "hunterHuntTasks",
             startTime: "30m",
