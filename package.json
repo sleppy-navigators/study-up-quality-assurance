@@ -4,9 +4,21 @@
   "author": "sleppy-navigators",
   "homepage": "http://monitor.study-up.site:3000/admin",
   "scripts": {
-    "end-of-day": "k6 run -e BASE_URL=http://localhost:8080 ./scenario/endOfDay.ts"
+    "test:end-of-day": "k6 run -e BASE_URL=http://localhost:8080 ./scenario/endOfDay.ts",
+    "dummy": "run-s dummy:*",
+    "dummy:chat-message": "node ./dummy/chatMessage.js",
+    "dummy:users": "node ./dummy/users.js",
+    "dummy:groups": "node ./dummy/groups.js",
+    "dummy:group-members": "node ./dummy/groupMembers.js",
+    "dummy:bots": "node ./dummy/bots.js",
+    "dummy:challenges": "node ./dummy/challenges.js",
+    "dummy:tasks": "node ./dummy/tasks.js",
+    "dummy:huntings": "node ./dummy/huntings.js",
+    "dummy:user-sessions": "node ./dummy/userSessions.js"
   },
   "devDependencies": {
-    "@types/k6": "^1.0.2"
+    "@faker-js/faker": "^9.8.0",
+    "@types/k6": "^1.0.2",
+    "npm-run-all": "^4.1.5"
   }
 }

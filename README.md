@@ -23,7 +23,7 @@ DAU = 10,000 * 0.3 * 0.5 = 1,500
 
 #### Challenge
 
-- Assume each user has 20 completed challenges in each group
-- Assume each challenge has an average of 10 tasks
+- Assume each user has 10 completed challenges in each group
+- Assume each challenge has an average of 20 tasks
 - Assume each user has two challenges in progress in each group
-- Assume the current challenge has four failed tasks, four successful tasks, and two in-progress tasks
+- Assume the current challenge has eight failed tasks, eight successful tasks, and four in-progress tasks
