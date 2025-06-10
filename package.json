@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "type": "module",
+  "author": "sleppy-navigators",
+  "homepage": "http://monitor.study-up.site:3000/admin",
+  "devDependencies": {
+    "@types/k6": "^1.0.2"
+  }
+}
