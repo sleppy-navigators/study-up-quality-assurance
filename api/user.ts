@@ -75,7 +75,7 @@ export const getUserTasks: (pageNum: number, pageSize: number, status: UserTaskS
     const params = new URLSearchParams([
         ['pageNum', pageNum.toString()],
         ['pageSize', pageSize.toString()],
-        ['status', UserTaskStatus[status]]
+        ['status', status.toString()]
     ]);
     const response = http.get(http.url`${__ENV.BASE_URL}/users/me/tasks?${params.toString()}`, {
         headers: {
@@ -134,7 +134,7 @@ export const getBountyBoard: (bearer: string, needResponse?: boolean) => BountyB
 ///////////////////////////////// Get Group List //////////////////////////////
 
 export enum GroupSortType {
-    LAST_CHAT = 'LAST_CHAT',
+    LATEST_CHAT = 'LATEST_CHAT',
     NONE = 'NONE'
 }
 
@@ -152,7 +152,7 @@ export interface GroupListResponse {
 
 export const getUserGroups: (sortBy: GroupSortType, bearer: string, needResponse?: boolean) => GroupListResponse = (sortBy, bearer, needResponse) => {
     const params = new URLSearchParams([
-        ['sortBy', GroupSortType[sortBy]]
+        ['sortBy', sortBy.toString()]
     ]);
     const response = http.get(http.url`${__ENV.BASE_URL}/users/me/groups?${params.toString()}`, {
         headers: {

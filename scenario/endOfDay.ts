@@ -177,7 +177,7 @@ export const hunterHuntTasks = () => {
     }
 
     // 5. Get group list
-    const {groups} = getUserGroups(GroupSortType.LAST_CHAT, accessToken, true);
+    const {groups} = getUserGroups(GroupSortType.LATEST_CHAT, accessToken, true);
 
     // 6. Enter group
     for (let i = 0; i < 2; i++) {
