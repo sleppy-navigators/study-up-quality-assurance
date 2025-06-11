@@ -1,5 +1,12 @@
+import fs from 'fs';
 import path from 'path';
 import {fileURLToPath} from 'url';
+import yaml from 'js-yaml';
+
+// Read YAML file
+const yamlPath = path.resolve('../src/main/resources/config/application.yaml');
+const yamlContent = fs.readFileSync(yamlPath, 'utf8');
+const applicationProperties = yaml.load(yamlContent);
 
 // Get current file's directory
 const __filename = fileURLToPath(import.meta.url);
@@ -37,5 +44,8 @@ export const CONFIG = {
     SENDER_TYPE: "BOT",
 
     // GroupMember specific configuration
-    GROUPS_PER_USER: 5
+    GROUPS_PER_USER: 5,
+
+    // JWT specific configuration
+    JWT_SECRET: applicationProperties.authentication['access-token'].secret,
 }; 

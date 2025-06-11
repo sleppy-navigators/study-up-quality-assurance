@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import {calculateProgress, closeStream, ensureDirectory, removeFileIfExists} from './util.js';
 import {CONFIG} from './config.js';
+import jwt from 'jsonwebtoken';
 
 // Output file configuration
 const OUTPUT_FILE = 'user_sessions.csv';
@@ -13,6 +14,30 @@ function getFutureDate() {
     return date;
 }
 
+// Generate a valid access token (expired)
+function generateAccessToken(userId) {
+    const now = Math.floor(Date.now() / 1000);
+    const oneWeekAgo = now - (7 * 24 * 60 * 60); // 1 week ago
+    const oneWeekAgoMinusOneHour = oneWeekAgo - (60 * 60); // 1 hour before 1 week ago
+
+    const payload = {
+        sub: userId.toString(),
+        username: `user${userId}`,
+        email: `user${userId}@example.com`,
+        authorities: ['profile'],
+        iss: 'study-up',
+        iat: oneWeekAgo, // issued 1 week ago
+        exp: oneWeekAgoMinusOneHour // expired 1 hour after issuance
+    };
+
+    return jwt.sign(payload, CONFIG.JWT_SECRET);
+}
+
+// Generate a valid refresh token (UUID format)
+function generateRefreshToken() {
+    return crypto.randomUUID();
+}
+
 // UserSession generation function
 function generateUserSession(userId) {
     const now = new Date().toISOString();
@@ -20,8 +45,8 @@ function generateUserSession(userId) {
     return {
         id: userId,
         user_id: userId,
-        access_token: `access${userId}`,
-        refresh_token: `refresh${userId}`,
+        access_token: generateAccessToken(userId),
+        refresh_token: generateRefreshToken(),
         expiration: expiration,
         created_at: now,
         updated_at: now
