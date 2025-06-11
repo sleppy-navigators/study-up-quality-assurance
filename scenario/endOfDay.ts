@@ -3,6 +3,8 @@ import {sleep} from 'k6';
 import {SharedArray} from 'k6/data';
 
 // @ts-ignore
+import papaparse from 'https://jslib.k6.io/papaparse/5.1.1/index.js';
+// @ts-ignore
 import {refreshToken} from '../api/auth.ts';
 import {
     getBountyBoard,
@@ -76,10 +78,19 @@ export const options = {
 
 //////////////////////////////////// DATA //////////////////////////////////////
 
-// TODO: Load user data from a file or database
-const data = new SharedArray('Users', function () {
-    return [];
-});
+interface MockedUserSession {
+    id: number,
+    user_id: number,
+    access_token: string,
+    refresh_token: string,
+    expiration: string,
+    created_at: string,
+    updated_at: string
+}
+
+const mockedUserSessions = new SharedArray('Mocked User Sessions', () => {
+    return papaparse.parse(open('../out/user_sessions.csv'), {header: true}).data;
+}) as MockedUserSession[];
 
 /////////////////////////////////// SCENARIO //////////////////////////////////////////
 
@@ -93,9 +104,13 @@ const data = new SharedArray('Users', function () {
  */
 export const challengerCertifyTasks = () => {
     const userIdx = exec.scenario.iterationInTest;
+    const mockedUserSession = mockedUserSessions[userIdx];
 
     // 1. Sign in
-    const {accessToken} = refreshToken(data[userIdx], true);
+    const {accessToken} = refreshToken({
+        accessToken: mockedUserSession.access_token,
+        refreshToken: mockedUserSession.refresh_token
+    }, true);
 
     // 2. Get user information
     getUserProfile(accessToken);
@@ -135,10 +150,14 @@ export const challengerCertifyTasks = () => {
  * 6.4. THINK - Simulate thinking time before leaving group
  */
 export const hunterHuntTasks = () => {
-    const userIdx = exec.scenario.iterationInTest + (data.length / 2);
+    const userIdx = exec.scenario.iterationInTest + (mockedUserSessions.length / 2);
+    const mockedUserSession = mockedUserSessions[userIdx];
 
     // 1. Sign in
-    const {accessToken} = refreshToken(data[userIdx], true);
+    const {accessToken} = refreshToken({
+        accessToken: mockedUserSession.access_token,
+        refreshToken: mockedUserSession.refresh_token
+    }, true);
 
     // 2. Get user information
     getUserProfile(accessToken);
