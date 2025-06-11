@@ -30,7 +30,12 @@ function generateAccessToken(userId) {
         exp: oneWeekAgoMinusOneHour // expired 1 hour after issuance
     };
 
-    return jwt.sign(payload, CONFIG.JWT_SECRET);
+    return jwt.sign(payload, CONFIG.JWT_SECRET, {
+        algorithm: 'HS512',
+        header: {
+            typ: undefined
+        }
+    });
 }
 
 // Generate a valid refresh token (UUID format)
