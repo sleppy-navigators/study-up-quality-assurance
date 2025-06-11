@@ -25,7 +25,9 @@ export interface GroupMemberListResponse {
 }
 
 export const getGroupMemberList: (groupId: number, sortBy: GroupMemberSortType, bearer: string, needResponse?: boolean) => GroupMemberListResponse = (groupId, sortBy, bearer, needResponse = false) => {
-    const params = new URLSearchParams([['sortBy', sortBy.toString()]]);
+    const params = new URLSearchParams([
+        ['sortBy', GroupMemberSortType[sortBy]]
+    ]);
     const response = http.get(http.url`${__ENV.BASE_URL}/groups/${groupId}/members?${params.toString()}`, {
         headers: {
             'Content-Type': 'application/json',

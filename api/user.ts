@@ -75,7 +75,7 @@ export const getUserTasks: (pageNum: number, pageSize: number, status: UserTaskS
     const params = new URLSearchParams([
         ['pageNum', pageNum.toString()],
         ['pageSize', pageSize.toString()],
-        ['status', status.toString()]
+        ['status', UserTaskStatus[status]]
     ]);
     const response = http.get(http.url`${__ENV.BASE_URL}/users/me/tasks?${params.toString()}`, {
         headers: {
@@ -151,7 +151,9 @@ export interface GroupListResponse {
 }
 
 export const getUserGroups: (sortBy: GroupSortType, bearer: string, needResponse?: boolean) => GroupListResponse = (sortBy, bearer, needResponse) => {
-    const params = new URLSearchParams([['sortBy', sortBy.toString()]]);
+    const params = new URLSearchParams([
+        ['sortBy', GroupSortType[sortBy]]
+    ]);
     const response = http.get(http.url`${__ENV.BASE_URL}/users/me/groups?${params.toString()}`, {
         headers: {
             'Content-Type': 'application/json',
