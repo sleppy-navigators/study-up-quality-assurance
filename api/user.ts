@@ -1,7 +1,7 @@
-import http from "k6/http";
+import http from 'k6/http';
 
 // @ts-ignore
-import {URLSearchParams} from "https://jslib.k6.io/url/1.0.0/index.js";
+import {URLSearchParams} from 'https://jslib.k6.io/url/1.0.0/index.js';
 
 //////////////////////////// Get User Profile ////////////////////////////
 
@@ -15,28 +15,28 @@ export interface UserProfileResponse {
 export const getUserProfile: (bearer: string, needResponse?: boolean) => UserProfileResponse = (bearer, needResponse = false) => {
     const response = http.get(http.url`${__ENV.BASE_URL}/users/me`, {
         headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": `Bearer ${bearer}`
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${bearer}`
         },
-        responseType: needResponse ? "text" : "none"
+        responseType: needResponse ? 'text' : 'none'
     });
 
     if (response.status !== 200) {
         throw new Error(`Failed to get user profile: ${response.status} ${response.status_text}`);
     }
 
-    return needResponse ? response.json("data") as unknown as UserProfileResponse : undefined;
+    return needResponse ? response.json('data') as unknown as UserProfileResponse : undefined;
 }
 
 //////////////////////////// Get User Tasks ////////////////////////////
 
 export enum UserTaskStatus {
-    SUCCEED = "SUCCEED",
-    FAILED = "FAILED",
-    IN_PROGRESS = "IN_PROGRESS",
-    COMPLETED = "COMPLETED",
-    ALL = "ALL"
+    SUCCEED = 'SUCCEED',
+    FAILED = 'FAILED',
+    IN_PROGRESS = 'IN_PROGRESS',
+    COMPLETED = 'COMPLETED',
+    ALL = 'ALL'
 }
 
 export interface TaskCertificationDetail {
@@ -73,24 +73,24 @@ export interface UserTasksResponse {
 
 export const getUserTasks: (pageNum: number, pageSize: number, status: UserTaskStatus, bearer: string, needResponse?: boolean) => UserTasksResponse = (pageNum, pageSize, status, bearer, needResponse = false) => {
     const params = new URLSearchParams([
-        ["pageNum", pageNum.toString()],
-        ["pageSize", pageSize.toString()],
-        ["status", status.toString()]
+        ['pageNum', pageNum.toString()],
+        ['pageSize', pageSize.toString()],
+        ['status', status.toString()]
     ]);
     const response = http.get(http.url`${__ENV.BASE_URL}/users/me/tasks?${params.toString()}`, {
         headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": `Bearer ${bearer}`
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${bearer}`
         },
-        responseType: needResponse ? "text" : "none"
+        responseType: needResponse ? 'text' : 'none'
     });
 
     if (response.status !== 200) {
         throw new Error(`Failed to get user tasks: ${response.status} ${response.status_text}`);
     }
 
-    return needResponse ? response.json("data") as unknown as UserTasksResponse : undefined;
+    return needResponse ? response.json('data') as unknown as UserTasksResponse : undefined;
 }
 
 //////////////////////////// Get Bounty Board ////////////////////////////
@@ -117,25 +117,25 @@ export interface BountyBoardResponse {
 export const getBountyBoard: (bearer: string, needResponse?: boolean) => BountyBoardResponse = (bearer, needResponse = false) => {
     const response = http.get(http.url`${__ENV.BASE_URL}/users/me/bounties`, {
         headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": `Bearer ${bearer}`
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${bearer}`
         },
-        responseType: needResponse ? "text" : "none"
+        responseType: needResponse ? 'text' : 'none'
     });
 
     if (response.status !== 200) {
         throw new Error(`Failed to get bounty board: ${response.status} ${response.status_text}`);
     }
 
-    return needResponse ? response.json("data") as unknown as BountyBoardResponse : undefined;
+    return needResponse ? response.json('data') as unknown as BountyBoardResponse : undefined;
 }
 
 ///////////////////////////////// Get Group List //////////////////////////////
 
 export enum GroupSortType {
-    LAST_CHAT = "LAST_CHAT",
-    NONE = "NONE"
+    LAST_CHAT = 'LAST_CHAT',
+    NONE = 'NONE'
 }
 
 export interface GroupBrief {
@@ -151,19 +151,19 @@ export interface GroupListResponse {
 }
 
 export const getUserGroups: (sortBy: GroupSortType, bearer: string, needResponse?: boolean) => GroupListResponse = (sortBy, bearer, needResponse) => {
-    const params = new URLSearchParams([["sortBy", sortBy.toString()]]);
+    const params = new URLSearchParams([['sortBy', sortBy.toString()]]);
     const response = http.get(http.url`${__ENV.BASE_URL}/users/me/groups?${params.toString()}`, {
         headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": `Bearer ${bearer}`
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${bearer}`
         },
-        responseType: needResponse ? "text" : "none"
+        responseType: needResponse ? 'text' : 'none'
     });
 
     if (response.status !== 200) {
         throw new Error(`Failed to get group list: ${response.status} ${response.status_text}`);
     }
 
-    return needResponse ? response.json("data") as unknown as GroupListResponse : undefined;
+    return needResponse ? response.json('data') as unknown as GroupListResponse : undefined;
 }

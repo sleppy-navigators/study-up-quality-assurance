@@ -1,9 +1,9 @@
-import exec from "k6/execution";
+import exec from 'k6/execution';
 import {sleep} from 'k6';
 import {SharedArray} from 'k6/data';
 
 // @ts-ignore
-import {refreshToken} from "../api/auth.ts";
+import {refreshToken} from '../api/auth.ts';
 import {
     getBountyBoard,
     getUserGroups,
@@ -12,11 +12,11 @@ import {
     GroupSortType,
     UserTaskStatus
 // @ts-ignore
-} from "../api/user.ts";
+} from '../api/user.ts';
 // @ts-ignore
-import {certifyTask, huntTask} from "../api/challenge.ts";
+import {certifyTask, huntTask} from '../api/challenge.ts';
 // @ts-ignore
-import {getGroupChatMessageList, getGroupMemberList, GroupMemberSortType} from "../api/groups.ts";
+import {getGroupChatMessageList, getGroupMemberList, GroupMemberSortType} from '../api/groups.ts';
 
 /**
  * Expect the most traffic at the end of the day and the beginning of the day
@@ -34,11 +34,11 @@ export const options = {
          * => Set the Arrival Rate to 1,050 users/30 minutes
          */
         challengerCertifyTasks: {
-            exec: "challengerCertifyTasks",
-            startTime: "0s",
-            executor: "constant-arrival-rate",
-            duration: "30m",
-            timeUnit: "1m",
+            exec: 'challengerCertifyTasks',
+            startTime: '0s',
+            executor: 'constant-arrival-rate',
+            duration: '30m',
+            timeUnit: '1m',
             rate: 35,
             preAllocatedVUs: 40,
         },
@@ -61,13 +61,13 @@ export const options = {
          * </ol>
          */
         hunterHuntTasks: {
-            exec: "hunterHuntTasks",
-            startTime: "30m",
-            executor: "ramping-arrival-rate",
-            timeUnit: "1m",
+            exec: 'hunterHuntTasks',
+            startTime: '30m',
+            executor: 'ramping-arrival-rate',
+            timeUnit: '1m',
             stages: [
-                {duration: "10m", target: 105},
-                {duration: "20m", target: 15},
+                {duration: '10m', target: 105},
+                {duration: '20m', target: 15},
             ],
             preAllocatedVUs: 70,
         }
@@ -77,7 +77,7 @@ export const options = {
 //////////////////////////////////// DATA //////////////////////////////////////
 
 // TODO: Load user data from a file or database
-const data = new SharedArray("Users", function () {
+const data = new SharedArray('Users', function () {
     return [];
 });
 
@@ -112,8 +112,8 @@ export const challengerCertifyTasks = () => {
 
         // 4.2. Submit task certification
         const mockedCertification = {
-            externalLinks: ["https://example.com/foo", "https://example.com/bar"],
-            imageUrls: ["https://image.com/foo", "https://image.com/bar"]
+            externalLinks: ['https://example.com/foo', 'https://example.com/bar'],
+            imageUrls: ['https://image.com/foo', 'https://image.com/bar']
         }
         certifyTask(challengeId, id, mockedCertification, accessToken);
     }
