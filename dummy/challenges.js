@@ -1,24 +1,11 @@
 import {faker} from '@faker-js/faker';
 import fs from 'fs';
 import path from 'path';
-import {fileURLToPath} from 'url';
 import {calculateProgress, closeStream, ensureDirectory, removeFileIfExists} from './util.js';
+import {CONFIG} from './config.js';
 
-// Get current file's directory
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Configuration
-const CONFIG = {
-    TOTAL_GROUPS: 10000,
-    MEMBERS_PER_GROUP: 5,
-    COMPLETED_CHALLENGES_PER_MEMBER: 10,
-    ONGOING_CHALLENGES_PER_MEMBER: 2,
-    DEFAULT_INITIAL_AMOUNT: 100,
-    LOG_INTERVAL: 1000,
-    OUTPUT_DIR: path.join(__dirname, '..', 'out'),
-    OUTPUT_FILE: 'challenges.csv'
-};
+// Output file configuration
+const OUTPUT_FILE = 'challenges.csv';
 
 // Calculate total challenges per group
 const CHALLENGES_PER_GROUP = CONFIG.MEMBERS_PER_GROUP * (CONFIG.COMPLETED_CHALLENGES_PER_MEMBER + CONFIG.ONGOING_CHALLENGES_PER_MEMBER);
@@ -71,7 +58,7 @@ async function generateChallengeDummyData() {
 
     // Check and create output directory
     const outputDir = ensureDirectory(CONFIG.OUTPUT_DIR);
-    const outputPath = path.join(outputDir, CONFIG.OUTPUT_FILE);
+    const outputPath = path.join(outputDir, OUTPUT_FILE);
 
     // Remove existing file if it exists
     removeFileIfExists(outputPath);

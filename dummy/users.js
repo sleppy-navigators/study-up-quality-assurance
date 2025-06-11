@@ -1,21 +1,11 @@
 import {faker} from '@faker-js/faker';
 import fs from 'fs';
 import path from 'path';
-import {fileURLToPath} from 'url';
 import {calculateProgress, closeStream, ensureDirectory, removeFileIfExists} from './util.js';
+import {CONFIG} from './config.js';
 
-// Get current file's directory
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Configuration
-const CONFIG = {
-    TOTAL_USERS: 10000,
-    DEFAULT_POINTS: 1000,
-    LOG_INTERVAL: 1000, // Log output interval
-    OUTPUT_DIR: path.join(__dirname, '..', 'out'),
-    OUTPUT_FILE: 'users.csv'
-};
+// Output file configuration
+const OUTPUT_FILE = 'users.csv';
 
 // User generation function
 function generateUser(index) {
@@ -38,7 +28,7 @@ async function generateUserDummyData() {
 
     // Check and create output directory
     const outputDir = ensureDirectory(CONFIG.OUTPUT_DIR);
-    const outputPath = path.join(outputDir, CONFIG.OUTPUT_FILE);
+    const outputPath = path.join(outputDir, OUTPUT_FILE);
 
     // Remove existing file if it exists
     removeFileIfExists(outputPath);
