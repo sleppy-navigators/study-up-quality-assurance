@@ -71,7 +71,7 @@ export const options = {
                 {duration: '10m', target: 105},
                 {duration: '20m', target: 15},
             ],
-            preAllocatedVUs: 70,
+            preAllocatedVUs: 160,
         }
     }
 };
@@ -93,6 +93,8 @@ const mockedUserSessions = new SharedArray('Mocked User Sessions', () => {
 }) as MockedUserSession[];
 
 /////////////////////////////////// SCENARIO //////////////////////////////////////////
+
+// TODO: simulate stomp-based real-time chat
 
 /**
  * 1. Sign in
