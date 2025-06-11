@@ -150,7 +150,7 @@ export const challengerCertifyTasks = () => {
  * 6.4. THINK - Simulate thinking time before leaving group
  */
 export const hunterHuntTasks = () => {
-    const userIdx = exec.scenario.iterationInTest + (mockedUserSessions.length / 2);
+    const userIdx = exec.scenario.iterationInTest + Math.round((mockedUserSessions.length / 2));
     const mockedUserSession = mockedUserSessions[userIdx];
 
     // 1. Sign in
