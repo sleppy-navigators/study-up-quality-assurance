@@ -45,12 +45,12 @@ export const options = {
             preAllocatedVUs: 40,
         },
 
-        // TODO: simulate end-of-day scheduler in parallel (challenge & task expiration checker)
         /**
          * At the end of the day,
          * a scheduler is triggered to check the completion/failure of challenges and tasks.
          * This behavior is directly related to the load on the server and needs to be simulated.
          */
+        // TODO: simulate end-of-day scheduler in parallel (challenge & task expiration checker)
 
         /**
          * Expect a large number of users to be task hunting right after the start of the day
