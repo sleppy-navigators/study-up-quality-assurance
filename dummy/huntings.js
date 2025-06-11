@@ -11,10 +11,10 @@ const CHALLENGES_PER_GROUP = CONFIG.MEMBERS_PER_GROUP *
     (CONFIG.COMPLETED_CHALLENGES_PER_MEMBER + CONFIG.ONGOING_CHALLENGES_PER_MEMBER);
 
 // Hunting generation function
-function generateHunting(taskId, hunterId) {
+function generateHunting(id, taskId, hunterId) {
     const now = new Date().toISOString();
     return {
-        id: taskId, // Use same id as task_id
+        id: id,
         task_id: taskId,
         hunter_id: hunterId,
         amount: 100,
@@ -65,7 +65,7 @@ async function generateHuntingDummyData() {
                     for (let j = 0; j < CONFIG.COMPLETED_FAILED_TASKS; j++) {
                         const taskId = (challengeId - 1) * CONFIG.TASKS_PER_CHALLENGE +
                             CONFIG.COMPLETED_SUCCESSFUL_TASKS + j + 1;
-                        const hunting = generateHunting(taskId, hunterId);
+                        const hunting = generateHunting(totalHuntings + 1, taskId, hunterId);
                         writeHuntingToCSV(writeStream, hunting);
                         totalHuntings++;
                     }
