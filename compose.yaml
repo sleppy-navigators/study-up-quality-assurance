@@ -6,10 +6,11 @@ services:
     command:
       - --web.enable-remote-write-receiver
       - --enable-feature=native-histograms
+      - --config.file=/etc/prometheus/prometheus.yaml
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus.yaml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
       - prometheus-storage:/prometheus:rw
 
   grafana:
