@@ -4,7 +4,7 @@
   "author": "sleppy-navigators",
   "homepage": "http://monitor.study-up.site:3000/admin",
   "scripts": {
-    "test:end-of-day": "cross-env K6_WEB_DASHBOARD=true k6 run -e BASE_URL=http://localhost:8080 --summary-mode=full ./scenario/endOfDay.ts",
+    "test:end-of-day": "cross-env K6_WEB_DASHBOARD=true K6_PROMETHEUS_RW_SERVER_URL=http://monitor.study-up.site:9090/api/v1/write K6_PROMETHEUS_RW_TREND_AS_NATIVE_HISTOGRAM=true k6 run -e BASE_URL=https://whitepiano-codeserver.pe.kr --log-output=loki=http://monitor.study-up.site:3100/loki/api/v1/push --summary-mode=full ./scenario/endOfDay.ts",
     "dummy": "run-s dummy:*",
     "dummy:chat-message": "node ./dummy/chatMessage.js",
     "dummy:users": "node ./dummy/users.js",
