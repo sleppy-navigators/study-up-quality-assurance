@@ -14,7 +14,8 @@
     "dummy:challenges": "node ./dummy/challenges.js",
     "dummy:tasks": "node ./dummy/tasks.js",
     "dummy:huntings": "node ./dummy/huntings.js",
-    "dummy:user-sessions": "node ./dummy/userSessions.js"
+    "dummy:user-sessions": "node ./dummy/userSessions.js",
+    "docker": "docker buildx build --platform linux/amd64,linux/arm64 -t goldentrash/study-up:latest .. --push"
   },
   "devDependencies": {
     "@faker-js/faker": "^9.8.0",
