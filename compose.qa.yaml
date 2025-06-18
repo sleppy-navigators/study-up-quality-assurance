@@ -55,9 +55,14 @@ services:
     pid: host
     network_mode: host
     command:
-      - "--path.rootfs=/host"
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--path.rootfs=/rootfs'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     volumes:
-      - /:/host:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
 
   exporter-mysql:
     image: prom/mysqld-exporter:latest
