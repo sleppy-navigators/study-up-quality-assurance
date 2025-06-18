@@ -15,6 +15,7 @@
     "dummy:tasks": "node ./dummy/tasks.js",
     "dummy:huntings": "node ./dummy/huntings.js",
     "dummy:user-sessions": "node ./dummy/userSessions.js",
+    "predocker": "cd .. && gradlew clean build -x test",
     "docker": "docker buildx build --platform linux/amd64,linux/arm64 -t goldentrash/study-up:latest .. --push"
   },
   "devDependencies": {

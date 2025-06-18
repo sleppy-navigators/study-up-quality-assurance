@@ -1,18 +1,12 @@
 scrape_configs:
-  - job_name: prod
-    # TODO: <http_config> to enable Basic Auth
+  - job_name: app-qa
     metrics_path: /actuator/prometheus
     static_configs:
-      - targets:
-          - "api.study-up.site"
-        labels:
-          application: app-core
-
-  - job_name: qa
-    # TODO: <http_config> to enable Basic Auth
-    metrics_path: /actuator/prometheus
-    static_configs:
-      - targets:
-          - "whitepiano-codeserver.pe.kr"
-        labels:
-          application: app-qa-core
+      - labels.application: app-qa-core
+        targets: [ "whitepiano-codeserver.pe.kr:8080" ]
+      - labels.application: exporter-host
+        targets: [ "whitepiano-codeserver.pe.kr:9100" ]
+      - labels.application: exporter-mysql
+        targets: [ "whitepiano-codeserver.pe.kr:9104" ]
+      - labels.application: exporter-mongo
+        targets: [ "whitepiano-codeserver.pe.kr:9216" ]

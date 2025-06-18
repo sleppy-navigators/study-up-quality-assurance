@@ -1,0 +1,83 @@
+services:
+  app-qa-core:
+    image: goldentrash/study-up:latest
+    restart: always
+    ports:
+      - "8080:8080"
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://monitor.study-up.site:3100/loki/api/v1/push"
+    entrypoint: [ "java", "-jar", "/app.jar" ]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://app-qa-mysql:3306/study_up?serverTimezone=Asia/Seoul
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_MONGODB_URI: mongodb://root:root@app-qa-mongo:27017/study_up_chat?authSource=admin
+
+  app-qa-mysql:
+    image: mysql:8.0
+    restart: always
+    ports:
+      - "3306:3306"
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://monitor.study-up.site:3100/loki/api/v1/push"
+    volumes:
+      - mysql-data:/var/lib/mysql:rw
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: study_up
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake
+
+  app-qa-mongo:
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://monitor.study-up.site:3100/loki/api/v1/push"
+    volumes:
+      - mongo-data:/data/db:rw
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+
+  exporter-host:
+    image: prom/node-exporter:latest
+    restart: always
+    pid: host
+    network_mode: host
+    command:
+      - "--path.rootfs=/host"
+    volumes:
+      - /:/host:ro
+
+  exporter-mysql:
+    image: prom/mysqld-exporter:latest
+    restart: always
+    ports:
+      - "9104:9104"
+    environment:
+      MYSQLD_EXPORTER_PASSWORD: root
+    command:
+      - --mysqld.address=app-qa-mysql:3306
+      - --mysqld.username=root
+
+  exporter-mongo:
+    image: percona/mongodb_exporter:latest
+    restart: always
+    ports:
+      - "9216:9216"
+    command:
+      - --mongodb.uri=mongodb://root:root@app-qa-mongo:27017/study_up_chat?authSource=admin
+
+volumes:
+  mysql-data:
+  mongo-data:
