@@ -55,10 +55,10 @@ services:
     pid: host
     network_mode: host
     command:
-      - '--path.procfs=/host/proc'
-      - '--path.sysfs=/host/sys'
-      - '--path.rootfs=/rootfs'
-      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+      - --path.procfs=/host/proc
+      - --path.sysfs=/host/sys
+      - --path.rootfs=/rootfs
+      - --collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
@@ -82,6 +82,13 @@ services:
       - "9216:9216"
     command:
       - --mongodb.uri=mongodb://root:root@app-qa-mongo:27017/study_up_chat?authSource=admin
+      - --collector.diagnosticdata
+      - --collector.replicasetstatus
+      - --collector.dbstats
+      - --collector.topmetrics
+      - --collector.currentopmetrics
+      - --collector.indexstats
+      - --collector.collstats
 
 volumes:
   mysql-data:
