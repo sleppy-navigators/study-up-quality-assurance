@@ -2,11 +2,15 @@ scrape_configs:
   - job_name: app-qa
     metrics_path: /actuator/prometheus
     static_configs:
-      - labels.application: app-qa-core
+      - labels:
+          application: app-qa-core
         targets: [ "whitepiano-codeserver.pe.kr:8080" ]
-      - labels.application: exporter-host
+      - labels:
+          application: exporter-host
         targets: [ "whitepiano-codeserver.pe.kr:9100" ]
-      - labels.application: exporter-mysql
+      - labels:
+          application: exporter-mysql
         targets: [ "whitepiano-codeserver.pe.kr:9104" ]
-      - labels.application: exporter-mongo
+      - labels:
+          application: exporter-mongo
         targets: [ "whitepiano-codeserver.pe.kr:9216" ]
