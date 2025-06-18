@@ -71,7 +71,7 @@ services:
       - --mysqld.username=root
 
   exporter-mongo:
-    image: percona/mongodb_exporter:latest
+    image: percona/mongodb_exporter:0.44
     restart: always
     ports:
       - "9216:9216"
