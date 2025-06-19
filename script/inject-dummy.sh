@@ -61,7 +61,7 @@ import_mysql() {
 
       log_info "Preparing to import $csv_file to table $table_name..."
       # Append LOAD DATA command for each CSV file, specifying columns
-      command_string+="LOAD DATA LOCAL INFILE '$csv_file' INTO TABLE \`$table_name\` FIELDS TERMINATED BY ',' IGNORE 1 LINES $column_list;"
+      command_string+="LOAD DATA LOCAL INFILE '$csv_file' INTO TABLE \`$table_name\` FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' IGNORE 1 LINES $column_list;"
     fi
   done
 
