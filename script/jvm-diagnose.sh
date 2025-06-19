@@ -5,7 +5,7 @@ set -euo pipefail
 # --- Configuration ---
 readonly APP_CONTAINER_KEY="app-qa-core"
 readonly APP_JAR_NAME="app.jar"
-readonly OUTPUT_DIR_BASE="./out"
+readonly OUTPUT_DIR_BASE="./out/jvm-diagnose"
 
 readonly THREAD_DUMP_COUNT=5
 readonly THREAD_DUMP_INTERVAL_SECONDS=10

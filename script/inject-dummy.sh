@@ -13,7 +13,7 @@ readonly MONGO_USER="root"
 readonly MONGO_PASSWORD="root"
 readonly MONGO_DATABASE="study_up_chat"
 readonly MONGO_AUTH_SOURCE="admin"
-readonly DATA_DIR="./out"
+readonly DATA_DIR="./out/dummy"
 
 # Helper function for logging
 log() {

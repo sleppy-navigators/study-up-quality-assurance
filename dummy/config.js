@@ -15,7 +15,7 @@ const __dirname = path.dirname(__filename);
 // Common configuration
 export const CONFIG = {
     // Common settings
-    OUTPUT_DIR: path.join(__dirname, '..', 'out'),
+    OUTPUT_DIR: path.join(__dirname, '..', 'out', 'dummy'),
     LOG_INTERVAL: 1000,
 
     // User settings
