@@ -20,24 +20,6 @@ log() {
   echo "--- $1 ---"
 }
 
-# Helper function to find a container name. Exits if not found.
-find_container_name() {
-  local service_key="$1"
-  log "Finding container for service key: ${service_key}..."
-
-  local container_name
-  container_name=$(docker ps --format '{{.Names}}' | grep "${service_key}" | head -n 1)
-
-  if [ -z "$container_name" ]; then
-    log "ERROR: Container for service with key '${service_key}' not found or not running."
-    log "Please ensure services are running, e.g., with 'docker compose -f ${COMPOSE_FILE} up -d'."
-    exit 1
-  fi
-
-  log "Found container: ${container_name}"
-  echo "$container_name"
-}
-
 # Helper function to execute commands in a docker container
 dc_exec() {
   docker exec -i "$@"
@@ -90,11 +72,25 @@ import_mongo() {
 main() {
   check_data_dir
 
+  log "Finding container for service key: ${MYSQL_SERVICE_KEY}..."
   local mysql_container_name
-  mysql_container_name=$(find_container_name "$MYSQL_SERVICE_KEY")
+  mysql_container_name=$(docker ps --format '{{.Names}}' | grep "${MYSQL_SERVICE_KEY}" | head -n 1)
+  if [ -z "$mysql_container_name" ]; then
+    log "ERROR: Container for service with key '${MYSQL_SERVICE_KEY}' not found or not running."
+    log "Please ensure services are running, e.g., with 'docker compose -f ${COMPOSE_FILE} up -d'."
+    exit 1
+  fi
+  log "Found container: ${mysql_container_name}"
 
+  log "Finding container for service key: ${MONGO_SERVICE_KEY}..."
   local mongo_container_name
-  mongo_container_name=$(find_container_name "$MONGO_SERVICE_KEY")
+  mongo_container_name=$(docker ps --format '{{.Names}}' | grep "${MONGO_SERVICE_KEY}" | head -n 1)
+  if [ -z "$mongo_container_name" ]; then
+    log "ERROR: Container for service with key '${MONGO_SERVICE_KEY}' not found or not running."
+    log "Please ensure services are running, e.g., with 'docker compose -f ${COMPOSE_FILE} up -d'."
+    exit 1
+  fi
+  log "Found container: ${mongo_container_name}"
 
   import_mysql "$mysql_container_name"
   import_mongo "$mongo_container_name"
