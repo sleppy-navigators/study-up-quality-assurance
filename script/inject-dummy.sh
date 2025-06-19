@@ -46,26 +46,30 @@ import_mysql() {
 
   export MYSQL_PWD="$MYSQL_PASSWORD"
 
-  local import_order=(
-    "users.csv"
-    "user_sessions.csv"
-    "groups.csv"
-    "bots.csv"
-    "group_members.csv"
-    "challenges.csv"
-    "tasks.csv"
-    "huntings.csv"
-  )
+  # Begin building the command string
+  command_string="SET FOREIGN_KEY_CHECKS = 0;"
 
-  for csv_file_name in "${import_order[@]}"; do
-    local csv_file="$DATA_DIR/$csv_file_name"
+  for csv_file in "$DATA_DIR"/*.csv; do
     if [ -f "$csv_file" ]; then
       local table_name
       table_name=$(basename "$csv_file" .csv)
-      log_info "Importing $csv_file to table $table_name..."
-      mysqlimport --host=127.0.0.1 --port=3306 --local --ignore-lines=1 --fields-terminated-by=',' -u "$MYSQL_USER" "$MYSQL_DATABASE" "$csv_file"
+
+      # Read the header to get column names
+      local header
+      header=$(head -n 1 "$csv_file" | tr -d '\r')
+      local column_list="($header)"
+
+      log_info "Preparing to import $csv_file to table $table_name..."
+      # Append LOAD DATA command for each CSV file, specifying columns
+      command_string+="LOAD DATA LOCAL INFILE '$csv_file' INTO TABLE \`$table_name\` FIELDS TERMINATED BY ',' IGNORE 1 LINES $column_list;"
     fi
   done
+
+  # Re-enable foreign key checks at the end
+  command_string+="SET FOREIGN_KEY_CHECKS = 1;"
+
+  # Execute all commands in a single MySQL session
+  mysql --host=127.0.0.1 --port=3306 --local-infile=1 -u "$MYSQL_USER" "$MYSQL_DATABASE" -e "$command_string"
 
   unset MYSQL_PWD
 
