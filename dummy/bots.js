@@ -13,7 +13,6 @@ function generateBot(groupId) {
         id: groupId, // bot_id is the same as group_id
         group_id: groupId,
         name: `Bot ${groupId}`, // Add bot name
-        deleted: false,
         created_at: now,
         updated_at: now
     };
@@ -36,7 +35,7 @@ async function generateBotDummyData() {
 
     try {
         // Write CSV header
-        writeStream.write('id,group_id,name,deleted,created_at,updated_at\n');
+        writeStream.write('id,group_id,name,created_at,updated_at\n');
 
         for (let groupId = 1; groupId <= CONFIG.TOTAL_GROUPS; groupId++) {
             const bot = generateBot(groupId);
@@ -44,7 +43,6 @@ async function generateBotDummyData() {
                 bot.id,
                 bot.group_id,
                 `"${bot.name}"`,
-                bot.deleted ? 1 : 0,
                 `"${bot.created_at}"`,
                 `"${bot.updated_at}"`
             ].join(',') + '\n';
