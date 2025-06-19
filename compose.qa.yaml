@@ -55,7 +55,7 @@ services:
     image: prom/node-exporter:latest
     restart: always
     pid: host
-    network_mode: host
+    network_mode: host # Be careful with this setting. Docker does **not** create `iptables` rules
     command:
       - --path.procfs=/host/proc
       - --path.sysfs=/host/sys
