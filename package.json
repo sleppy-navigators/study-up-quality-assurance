@@ -5,7 +5,7 @@
   "homepage": "http://monitor.study-up.site:3000/admin",
   "scripts": {
     "diagnose": "bash ./script/jvm-diagnose.sh",
-    "test:end-of-day": "cross-env K6_WEB_DASHBOARD=true K6_PROMETHEUS_RW_SERVER_URL=http://monitor.study-up.site:9090/api/v1/write K6_PROMETHEUS_RW_TREND_AS_NATIVE_HISTOGRAM=true k6 run --log-output=loki=http://monitor.study-up.site:3100/loki/api/v1/push --summary-mode=full -o experimental-prometheus-rw -e BASE_URL=https://whitepiano-codeserver.pe.kr ./scenario/endOfDay.ts",
+    "test:end-of-day": "cross-env K6_WEB_DASHBOARD=true K6_PROMETHEUS_RW_SERVER_URL=http://monitor.study-up.site:9090/api/v1/write K6_PROMETHEUS_RW_TREND_AS_NATIVE_HISTOGRAM=true k6 run --log-output=loki=http://monitor.study-up.site:3100/loki/api/v1/push --summary-mode=full -o experimental-prometheus-rw -e BASE_URL=https://whitepiano-codeserver.pe.kr:8080 ./scenario/endOfDay.ts",
     "inject:dummy": "./script/inject-dummy.sh",
     "dummy": "run-s dummy:*",
     "dummy:chat-message": "node ./dummy/chatMessage.js",

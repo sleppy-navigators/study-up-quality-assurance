@@ -89,7 +89,7 @@ interface MockedUserSession {
 }
 
 const mockedUserSessions = new SharedArray('Mocked User Sessions', () => {
-    return papaparse.parse(open('../out/user_sessions.csv'), {header: true}).data;
+    return papaparse.parse(open('../out/dummy/user_sessions.csv'), {header: true}).data;
 }) as MockedUserSession[];
 
 /////////////////////////////////// SCENARIO //////////////////////////////////////////
