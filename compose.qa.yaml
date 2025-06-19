@@ -27,7 +27,6 @@ services:
         loki-url: "http://monitor.study-up.site:3100/loki/api/v1/push"
     volumes:
       - mysql-data:/var/lib/mysql:rw
-      - ./out/dummy:/import-data:ro
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: study_up
@@ -48,7 +47,6 @@ services:
         loki-url: "http://monitor.study-up.site:3100/loki/api/v1/push"
     volumes:
       - mongo-data:/data/db:rw
-      - ./out/dummy:/import-data:ro
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
