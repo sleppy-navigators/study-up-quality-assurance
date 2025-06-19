@@ -43,7 +43,9 @@ import_mysql() {
       local table_name
       table_name=$(basename "$csv_file" .csv)
       log "Importing $csv_file to table $table_name..."
-      dc_exec "$container_name" mysqlimport --local --ignore-lines=1 --fields-terminated-by=',' -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" "/import-data/$(basename "$csv_file")"
+      local import_query
+      import_query="LOAD DATA LOCAL INFILE '/import-data/$(basename "$csv_file")' INTO TABLE \`$table_name\` FIELDS TERMINATED BY ',' IGNORE 1 LINES;"
+      dc_exec "$container_name" mysql --local-infile=1 -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" -e "$import_query"
     fi
   done
 
