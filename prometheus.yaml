@@ -4,7 +4,7 @@ scrape_configs:
     static_configs:
       - labels:
           application: app-qa-core
-        targets: [ "whitepiano-codeserver.pe.kr:8080" ]
+        targets: [ "whitepiano-codeserver.pe.kr:8081" ]
 
   - job_name: exporter
     static_configs:
