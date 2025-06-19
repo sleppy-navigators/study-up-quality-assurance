@@ -44,18 +44,30 @@ check_data_dir() {
 import_mysql() {
   log_step "Importing data into MySQL from host..."
 
-  mysql --host=127.0.0.1 --port=3306 -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" -e "SET FOREIGN_KEY_CHECKS=0;" > /dev/null
+  export MYSQL_PWD="$MYSQL_PASSWORD"
 
-  for csv_file in "$DATA_DIR"/*.csv; do
+  local import_order=(
+    "users.csv"
+    "user_sessions.csv"
+    "groups.csv"
+    "bots.csv"
+    "group_members.csv"
+    "challenges.csv"
+    "tasks.csv"
+    "huntings.csv"
+  )
+
+  for csv_file_name in "${import_order[@]}"; do
+    local csv_file="$DATA_DIR/$csv_file_name"
     if [ -f "$csv_file" ]; then
       local table_name
       table_name=$(basename "$csv_file" .csv)
       log_info "Importing $csv_file to table $table_name..."
-      mysqlimport --host=127.0.0.1 --port=3306 --local --ignore-lines=1 --fields-terminated-by=',' -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" "$csv_file"
+      mysqlimport --host=127.0.0.1 --port=3306 --local --ignore-lines=1 --fields-terminated-by=',' -u "$MYSQL_USER" "$MYSQL_DATABASE" "$csv_file"
     fi
   done
 
-  mysql --host=127.0.0.1 --port=3306 -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" -e "SET FOREIGN_KEY_CHECKS=1;" > /dev/null
+  unset MYSQL_PWD
 
   log_success "MySQL import finished."
 }

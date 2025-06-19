@@ -35,6 +35,7 @@ services:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
       - --skip-character-set-client-handshake
+      - --local-infile=1
 
   app-qa-mongo:
     image: mongo:latest
