@@ -5,7 +5,7 @@ import {calculateProgress, closeStream, ensureDirectory, removeFileIfExists} fro
 import {CONFIG} from './config.js';
 
 // Output file configuration
-const OUTPUT_FILE = 'chat_messages.json';
+const OUTPUT_FILE = 'chatMessages.json';
 
 // Message generation function
 function generateMessage(groupId, index) {
@@ -59,7 +59,11 @@ async function generateChatMessageDummyData() {
         for (let groupId = 1; groupId <= CONFIG.TOTAL_GROUPS; groupId++) {
             for (let i = 0; i < CONFIG.MESSAGES_PER_GROUP; i++) {
                 const message = generateMessage(groupId, i);
-                writeStream.write(JSON.stringify(message) + '\n');
+                if (groupId === CONFIG.TOTAL_GROUPS && i === CONFIG.MESSAGES_PER_GROUP - 1) {
+                    writeStream.write(JSON.stringify(message));
+                } else {
+                    writeStream.write(JSON.stringify(message) + '\n');
+                }
                 totalMessages++;
             }
 
