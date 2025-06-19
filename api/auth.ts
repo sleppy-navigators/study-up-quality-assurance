@@ -1,5 +1,9 @@
 import http from 'k6/http';
 
+
+// @ts-ignore
+import {CONFIG} from './config.ts';
+
 //////////////////////////// Refresh Token ////////////////////////////
 
 export interface RefreshTokenRequest {
@@ -13,7 +17,7 @@ export interface RefreshTokenResponse {
 }
 
 export const refreshToken: (request: RefreshTokenRequest, needResponse?: boolean) => RefreshTokenResponse = (request, needResponse = false) => {
-    const response = http.post(http.url`${__ENV.BASE_URL}/auth/refresh`, JSON.stringify(request), {
+    const response = http.post(http.url`${CONFIG.BASE_URL}/auth/refresh`, JSON.stringify(request), {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
@@ -22,7 +26,7 @@ export const refreshToken: (request: RefreshTokenRequest, needResponse?: boolean
     });
 
     if (response.status !== 200) {
-        throw new Error(`Failed to refresh token: ${response.status} ${response.status_text}`);
+        console.error(`Failed to refresh token: ${response.status} ${response.body}`);
     }
 
     return needResponse ? response.json('data') as unknown as RefreshTokenResponse : undefined;

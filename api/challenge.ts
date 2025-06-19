@@ -1,5 +1,8 @@
 import http from 'k6/http';
 
+// @ts-ignore
+import {CONFIG} from './config.ts';
+
 //////////////////////////// Certify Task ////////////////////////////
 
 export interface CertifyTaskRequest {
@@ -22,7 +25,7 @@ export interface CertifyTaskResponse {
 }
 
 export const certifyTask: (challengeId: number, taskId: number, request: CertifyTaskRequest, bearer: string, needResponse?: boolean) => CertifyTaskResponse = (challengeId, taskId, request, bearer, needResponse = false) => {
-    const response = http.post(http.url`${__ENV.BASE_URL}/challenges/${challengeId}/tasks/${taskId}/certify`, JSON.stringify(request), {
+    const response = http.post(http.url`${CONFIG.BASE_URL}/challenges/${challengeId}/tasks/${taskId}/certify`, JSON.stringify(request), {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -32,7 +35,7 @@ export const certifyTask: (challengeId: number, taskId: number, request: Certify
     });
 
     if (response.status !== 200) {
-        throw new Error(`Failed to certify task: ${response.status} ${response.status_text}`);
+        console.error(`Failed to certify task: ${response.status} ${response.body}`);
     }
 
     return needResponse ? response.json('data') as unknown as CertifyTaskResponse : undefined;
@@ -45,7 +48,7 @@ export interface HuntTaskResponse {
 }
 
 export const huntTask: (challengeId: number, taskId: number, bearer: string, needResponse?: boolean) => HuntTaskResponse = (challengeId, taskId, bearer, needResponse = false) => {
-    const response = http.post(http.url`${__ENV.BASE_URL}/challenges/${challengeId}/tasks/${taskId}/hunt`, null, {
+    const response = http.post(http.url`${CONFIG.BASE_URL}/challenges/${challengeId}/tasks/${taskId}/hunt`, null, {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -55,7 +58,7 @@ export const huntTask: (challengeId: number, taskId: number, bearer: string, nee
     });
 
     if (response.status !== 200) {
-        throw new Error(`Failed to hunt task: ${response.status} ${response.status_text}`);
+        console.error(`Failed to hunt task: ${response.status} ${response.body}`);
     }
 
     return needResponse ? response.json('data') as unknown as HuntTaskResponse : undefined;

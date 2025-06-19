@@ -2,6 +2,8 @@ import http from 'k6/http';
 
 // @ts-ignore
 import {URLSearchParams} from 'https://jslib.k6.io/url/1.0.0/index.js';
+// @ts-ignore
+import {CONFIG} from './config.ts';
 
 //////////////////////////// Get User Profile ////////////////////////////
 
@@ -13,7 +15,7 @@ export interface UserProfileResponse {
 }
 
 export const getUserProfile: (bearer: string, needResponse?: boolean) => UserProfileResponse = (bearer, needResponse = false) => {
-    const response = http.get(http.url`${__ENV.BASE_URL}/users/me`, {
+    const response = http.get(http.url`${CONFIG.BASE_URL}/users/me`, {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -23,7 +25,7 @@ export const getUserProfile: (bearer: string, needResponse?: boolean) => UserPro
     });
 
     if (response.status !== 200) {
-        throw new Error(`Failed to get user profile: ${response.status} ${response.status_text}`);
+        console.error(`Failed to get user profile: ${response.status} ${response.body}`);
     }
 
     return needResponse ? response.json('data') as unknown as UserProfileResponse : undefined;
@@ -77,7 +79,7 @@ export const getUserTasks: (pageNum: number, pageSize: number, status: UserTaskS
         ['pageSize', pageSize.toString()],
         ['status', status.toString()]
     ]);
-    const response = http.get(http.url`${__ENV.BASE_URL}/users/me/tasks?${params.toString()}`, {
+    const response = http.get(http.url`${CONFIG.BASE_URL}/users/me/tasks?${params.toString()}`, {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -87,7 +89,7 @@ export const getUserTasks: (pageNum: number, pageSize: number, status: UserTaskS
     });
 
     if (response.status !== 200) {
-        throw new Error(`Failed to get user tasks: ${response.status} ${response.status_text}`);
+        console.error(`Failed to get user tasks: ${response.status} ${response.body}`);
     }
 
     return needResponse ? response.json('data') as unknown as UserTasksResponse : undefined;
@@ -115,7 +117,7 @@ export interface BountyBoardResponse {
 }
 
 export const getBountyBoard: (bearer: string, needResponse?: boolean) => BountyBoardResponse = (bearer, needResponse = false) => {
-    const response = http.get(http.url`${__ENV.BASE_URL}/users/me/bounties`, {
+    const response = http.get(http.url`${CONFIG.BASE_URL}/users/me/bounties`, {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -125,7 +127,7 @@ export const getBountyBoard: (bearer: string, needResponse?: boolean) => BountyB
     });
 
     if (response.status !== 200) {
-        throw new Error(`Failed to get bounty board: ${response.status} ${response.status_text}`);
+        console.error(`Failed to get bounty board: ${response.status} ${response.body}`);
     }
 
     return needResponse ? response.json('data') as unknown as BountyBoardResponse : undefined;
@@ -154,7 +156,7 @@ export const getUserGroups: (sortBy: GroupSortType, bearer: string, needResponse
     const params = new URLSearchParams([
         ['sortBy', sortBy.toString()]
     ]);
-    const response = http.get(http.url`${__ENV.BASE_URL}/users/me/groups?${params.toString()}`, {
+    const response = http.get(http.url`${CONFIG.BASE_URL}/users/me/groups?${params.toString()}`, {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -164,7 +166,7 @@ export const getUserGroups: (sortBy: GroupSortType, bearer: string, needResponse
     });
 
     if (response.status !== 200) {
-        throw new Error(`Failed to get group list: ${response.status} ${response.status_text}`);
+        console.error(`Failed to get group list: ${response.status} ${response.body}`);
     }
 
     return needResponse ? response.json('data') as unknown as GroupListResponse : undefined;

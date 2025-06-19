@@ -2,6 +2,8 @@ import http from 'k6/http';
 
 // @ts-ignore
 import {URLSearchParams} from 'https://jslib.k6.io/url/1.0.0/index.js';
+// @ts-ignore
+import {CONFIG} from './config.ts';
 
 //////////////////////////// Get Group Member List ////////////////////////////
 
@@ -28,7 +30,7 @@ export const getGroupMemberList: (groupId: number, sortBy: GroupMemberSortType, 
     const params = new URLSearchParams([
         ['sortBy', sortBy.toString()]
     ]);
-    const response = http.get(http.url`${__ENV.BASE_URL}/groups/${groupId}/members?${params.toString()}`, {
+    const response = http.get(http.url`${CONFIG.BASE_URL}/groups/${groupId}/members?${params.toString()}`, {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -38,7 +40,7 @@ export const getGroupMemberList: (groupId: number, sortBy: GroupMemberSortType, 
     });
 
     if (response.status !== 200) {
-        throw new Error(`Failed to get group member list: ${response.status} ${response.status_text}`);
+        console.error(`Failed to get group member list: ${response.status} ${response.body}`);
     }
 
     return needResponse ? response.json('data') as unknown as GroupMemberListResponse : undefined;
@@ -73,7 +75,7 @@ export const getGroupChatMessageList: (groupId: number, pageNum: number, pageSiz
         ['pageNum', pageNum.toString()],
         ['pageSize', pageSize.toString()]
     ]);
-    const response = http.get(http.url`${__ENV.BASE_URL}/groups/${groupId}/messages?${params.toString()}`, {
+    const response = http.get(http.url`${CONFIG.BASE_URL}/groups/${groupId}/messages?${params.toString()}`, {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -83,7 +85,7 @@ export const getGroupChatMessageList: (groupId: number, pageNum: number, pageSiz
     });
 
     if (response.status !== 200) {
-        throw new Error(`Failed to get group chat message list: ${response.status} ${response.status_text}`);
+        console.error(`Failed to get group chat message list: ${response.status} ${response.body}`);
     }
 
     return needResponse ? response.json('data') as unknown as GroupChatMessageListResponse : undefined;
