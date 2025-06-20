@@ -42,7 +42,7 @@ export const options = {
             duration: '30m',
             timeUnit: '1m',
             rate: 35,
-            preAllocatedVUs: 40,
+            preAllocatedVUs: 100,
         },
 
         /**
@@ -71,7 +71,7 @@ export const options = {
                 {duration: '10m', target: 105},
                 {duration: '20m', target: 15},
             ],
-            preAllocatedVUs: 160,
+            preAllocatedVUs: 300,
         }
     }
 };
