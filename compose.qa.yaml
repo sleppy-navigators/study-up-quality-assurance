@@ -9,7 +9,6 @@ services:
       driver: loki
       options:
         loki-url: "http://monitor.study-up.site:3100/loki/api/v1/push"
-    entrypoint: [ "java", "-jar", "/app.jar" ]
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://app-qa-mysql:3306/study_up?serverTimezone=Asia/Seoul
       SPRING_DATASOURCE_USERNAME: root
