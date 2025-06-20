@@ -4,10 +4,11 @@
   "author": "sleppy-navigators",
   "homepage": "http://monitor.study-up.site:3000/admin",
   "scripts": {
-    "diagnose": "bash ./script/jvm-diagnose.sh",
     "test:end-of-day": "cross-env K6_PROMETHEUS_RW_SERVER_URL=http://monitor.study-up.site:9090/api/v1/write K6_PROMETHEUS_RW_TREND_AS_NATIVE_HISTOGRAM=true k6 run -o experimental-prometheus-rw ./scenario/endOfDay.ts",
-    "inject:dummy": "./script/inject-dummy.sh",
+    "diagnose": "bash ./script/jvm-diagnose.sh",
     "dummy": "run-s dummy:*",
+    "inject:dummy": "./script/inject-dummy.sh",
+    "docker": "docker buildx build --platform linux/amd64,linux/arm64 -t goldentrash/study-up:latest .. --push",
     "dummy:chat-message": "node ./dummy/chatMessage.js",
     "dummy:users": "node ./dummy/users.js",
     "dummy:groups": "node ./dummy/groups.js",
@@ -17,8 +18,7 @@
     "dummy:tasks": "node ./dummy/tasks.js",
     "dummy:huntings": "node ./dummy/huntings.js",
     "dummy:user-sessions": "node ./dummy/userSessions.js",
-    "predocker": "cd .. && gradlew clean build -x test",
-    "docker": "docker buildx build --platform linux/amd64,linux/arm64 -t goldentrash/study-up:latest .. --push"
+    "predocker": "cd .. && gradlew clean build -x test"
   },
   "devDependencies": {
     "@faker-js/faker": "^9.8.0",
