@@ -37,7 +37,7 @@ function generateTask(challengeId, taskIndex, isSuccessful, isInProgress, challe
 
     const externalLinks = isSuccessful ? generateUrls() : "";
     const imageUrls = isSuccessful ? generateUrls() : "";
-    const certifiedAt = isSuccessful ? getPastDate().toISOString() : null;
+    const certifiedAt = isSuccessful ? getPastDate().toISOString() : "\\N";
 
     return {
         id: (challengeId - 1) * CONFIG.TASKS_PER_CHALLENGE + taskIndex + 1,
